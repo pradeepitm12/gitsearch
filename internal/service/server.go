@@ -23,8 +23,16 @@ func (s *server) Search(ctx context.Context, req *pb.SearchRequest) (*pb.SearchR
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "invalid search type: %v", err)
 	}
+	page := req.GetPage()
+	perPage := req.GetPerPage()
+	if page <= 0 {
+		page = 1
+	}
+	if perPage <= 0 || perPage > 100 {
+		perPage = 30
+	}
 
-	results, err := searcher.Search(req.SearchTerm, req.User)
+	results, err := searcher.Search(req.SearchTerm, req.User, int(page), int(perPage))
 	if err != nil {
 		return nil, status.Errorf(codes.Internal, "search failed: %v", err)
 	}
@@ -36,6 +44,6 @@ func (s *server) Search(ctx context.Context, req *pb.SearchRequest) (*pb.SearchR
 			Repo:    r.Repo,
 		})
 	}
-
+	
 	return &response, nil
 }

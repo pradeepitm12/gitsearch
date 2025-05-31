@@ -14,7 +14,7 @@ const (
 )
 
 type Searcher interface {
-	Search(term string, user string) ([]Result, error)
+	Search(term string, user string, page, perPage int) ([]Result, error)
 }
 
 type Result struct {

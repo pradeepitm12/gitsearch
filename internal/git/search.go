@@ -7,12 +7,15 @@ import (
 	"net/url"
 )
 
-func genericSearch(token, endpoint, accept, term, user string, extract func([]byte) ([]Result, error)) ([]Result, error) {
+func genericSearch(token, endpoint, accept, term, user string, page, perPage int, extract func([]byte) ([]Result, error)) ([]Result, error) {
 	q := url.QueryEscape(term)
 	if user != "" {
-		q += "+user:" + user
+		q += "+user:" + url.QueryEscape(user)
 	}
-	req, _ := http.NewRequest("GET", fmt.Sprintf("https://api.github.com/search/%s?q=%s", endpoint, q), nil)
+
+	apiURL := fmt.Sprintf("https://api.github.com/search/%s?q=%s&page=%d&per_page=%d", endpoint, q, page, perPage)
+	req, _ := http.NewRequest("GET", apiURL, nil)
+
 	if token != "" {
 		req.Header.Set("Authorization", "Bearer "+token)
 	}

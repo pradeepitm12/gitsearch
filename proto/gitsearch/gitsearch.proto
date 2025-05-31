@@ -12,6 +12,8 @@ message SearchRequest {
   string search_term = 1;
   string user = 2;
   string  type = 3; // "code", "repositories", "issues", etc.
+  int32 page = 4;
+  int32 per_page = 5;
 }
 
 message SearchResponse {

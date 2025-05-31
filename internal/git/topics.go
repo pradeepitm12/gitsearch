@@ -10,13 +10,15 @@ func NewTopicsSearcher(token string) *TopicsSearcher {
 	return &TopicsSearcher{Token: token}
 }
 
-func (s *TopicsSearcher) Search(term, user string) ([]Result, error) {
+func (s *TopicsSearcher) Search(term, user string, page, perPage int) ([]Result, error) {
 	return genericSearch(
 		s.Token,
 		"topics",
 		"application/vnd.github+json",
 		term,
 		user,
+		page,
+		perPage,
 		extractTopics,
 	)
 }

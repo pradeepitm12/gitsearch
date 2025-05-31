@@ -18,3 +18,6 @@
     grpcurl -plaintext -d '{"search_term":"grpc","type":"repositories"}' localhost:50051 gitsearch.GithubSearchService/Search
     grpcurl -plaintext -d '{"search_term":"devops","type":"topics"}' localhost:50051 gitsearch.GithubSearchService/Search
     grpcurl -plaintext -d '{"search_term":"torvalds","type":"users"}' localhost:50051 gitsearch.GithubSearchService/Search
+
+With pageination
+grpcurl -plaintext -d '{"type": "code","search_term": "grpc","user": "grpc","page": 1,"per_page": 5}' localhost:50051 gitsearch.GithubSearchService/Search

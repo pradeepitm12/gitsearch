@@ -7,12 +7,11 @@
 package gitsearch
 
 import (
+	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
+	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
-
-	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
-	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
 )
 
 const (
@@ -27,6 +26,8 @@ type SearchRequest struct {
 	SearchTerm    string                 `protobuf:"bytes,1,opt,name=search_term,json=searchTerm,proto3" json:"search_term,omitempty"`
 	User          string                 `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
 	Type          string                 `protobuf:"bytes,3,opt,name=type,proto3" json:"type,omitempty"` // "code", "repositories", "issues", etc.
+	Page          int32                  `protobuf:"varint,4,opt,name=page,proto3" json:"page,omitempty"`
+	PerPage       int32                  `protobuf:"varint,5,opt,name=per_page,json=perPage,proto3" json:"per_page,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -80,6 +81,20 @@ func (x *SearchRequest) GetType() string {
 		return x.Type
 	}
 	return ""
+}
+
+func (x *SearchRequest) GetPage() int32 {
+	if x != nil {
+		return x.Page
+	}
+	return 0
+}
+
+func (x *SearchRequest) GetPerPage() int32 {
+	if x != nil {
+		return x.PerPage
+	}
+	return 0
 }
 
 type SearchResponse struct {
@@ -182,12 +197,14 @@ var File_proto_gitsearch_gitsearch_proto protoreflect.FileDescriptor
 
 const file_proto_gitsearch_gitsearch_proto_rawDesc = "" +
 	"\n" +
-	"\x1fproto/gitsearch/gitsearch.proto\x12\tgitsearch\"X\n" +
+	"\x1fproto/gitsearch/gitsearch.proto\x12\tgitsearch\"\x87\x01\n" +
 	"\rSearchRequest\x12\x1f\n" +
 	"\vsearch_term\x18\x01 \x01(\tR\n" +
 	"searchTerm\x12\x12\n" +
 	"\x04user\x18\x02 \x01(\tR\x04user\x12\x12\n" +
-	"\x04type\x18\x03 \x01(\tR\x04type\"=\n" +
+	"\x04type\x18\x03 \x01(\tR\x04type\x12\x12\n" +
+	"\x04page\x18\x04 \x01(\x05R\x04page\x12\x19\n" +
+	"\bper_page\x18\x05 \x01(\x05R\aperPage\"=\n" +
 	"\x0eSearchResponse\x12+\n" +
 	"\aresults\x18\x01 \x03(\v2\x11.gitsearch.ResultR\aresults\"7\n" +
 	"\x06Result\x12\x19\n" +
