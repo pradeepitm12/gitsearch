@@ -1,6 +1,8 @@
 package main
 
 import (
+	"github.com/pradeepitm12/gitsearch/internal/middleware"
+	"golang.org/x/time/rate"
 	"log"
 	"net"
 
@@ -19,7 +21,10 @@ func main() {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	grpcServer := grpc.NewServer()
+	limiter := rate.NewLimiter(10, 20)
+	grpcServer := grpc.NewServer(
+		grpc.UnaryInterceptor(middleware.RateLimit(limiter)),
+	)
 
 	pb.RegisterGithubSearchServiceServer(grpcServer, service.New(cfg.GitHubToken))
 
