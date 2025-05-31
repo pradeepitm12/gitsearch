@@ -2,76 +2,40 @@ package service
 
 import (
 	"context"
-	"encoding/json"
-	"fmt"
-	"net/http"
-	"os"
 
+	"github.com/pradeepitm12/gitsearch/internal/git"
 	pb "github.com/pradeepitm12/gitsearch/proto/gitsearch"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
-type GitSearchServer struct {
+type server struct {
 	pb.UnimplementedGithubSearchServiceServer
-	client *http.Client
-	token  string
+	token string
 }
 
-func NewGitSearchServer() *GitSearchServer {
-	return &GitSearchServer{
-		client: &http.Client{},
-		token:  os.Getenv("GITHUB_TOKEN"),
-	}
+func New(token string) pb.GithubSearchServiceServer {
+	return &server{token: token}
 }
 
-func (s *GitSearchServer) Search(ctx context.Context, req *pb.SearchRequest) (*pb.SearchResponse, error) {
-	q := req.GetSearchTerm()
-	if req.GetUser() != "" {
-		q += fmt.Sprintf("+user:%s", req.GetUser())
-	}
-	url := fmt.Sprintf("https://api.github.com/search/code?q=%s", q)
-
-	httpReq, err := http.NewRequestWithContext(ctx, "GET", url, nil)
+func (s *server) Search(ctx context.Context, req *pb.SearchRequest) (*pb.SearchResponse, error) {
+	searcher, err := git.NewSearcher(req.Type, s.token)
 	if err != nil {
-		return nil, err
-	}
-	httpReq.Header.Set("Accept", "application/vnd.github.v3+json")
-
-	if s.token != "" {
-		httpReq.Header.Set("Authorization", "token "+s.token)
-	} else {
-		fmt.Println("No token set, sending unauthenticated request.")
+		return nil, status.Errorf(codes.InvalidArgument, "invalid search type: %v", err)
 	}
 
-	resp, err := s.client.Do(httpReq)
+	results, err := searcher.Search(req.SearchTerm, req.User)
 	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	if resp.StatusCode != 200 {
-		return nil, fmt.Errorf("GitHub API error: %s", resp.Status)
+		return nil, status.Errorf(codes.Internal, "search failed: %v", err)
 	}
 
-	var body struct {
-		Items []struct {
-			HTMLURL    string `json:"html_url"`
-			Repository struct {
-				FullName string `json:"full_name"`
-			} `json:"repository"`
-		} `json:"items"`
-	}
-
-	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
-		return nil, err
-	}
-
-	results := []*pb.Result{}
-	for _, item := range body.Items {
-		results = append(results, &pb.Result{
-			FileUrl: item.HTMLURL,
-			Repo:    item.Repository.FullName,
+	var response pb.SearchResponse
+	for _, r := range results {
+		response.Results = append(response.Results, &pb.Result{
+			FileUrl: r.FileURL,
+			Repo:    r.Repo,
 		})
 	}
 
-	return &pb.SearchResponse{Results: results}, nil
+	return &response, nil
 }
