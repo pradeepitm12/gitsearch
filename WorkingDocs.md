@@ -21,3 +21,28 @@
 
 With pageination
 grpcurl -plaintext -d '{"type": "code","search_term": "grpc","user": "grpc","page": 1,"per_page": 5}' localhost:50051 gitsearch.GithubSearchService/Search
+
+
+# ToDo,
+paging          -- Done
+testing         -- Done
+user filter     -- Done
+logging 
+error handeling
+Document
+
+
+grpcurl -plaintext -d '{"search_term":"jwt","user":"torvalds","type":"code","page":1,"per_page":10}' localhost:50051 gitsearch.GithubSearchService/Search
+grpcurl -plaintext -d '{"search_term":"fix bug","user":"golang","type":"commits","page":2,"per_page":20}' localhost:50051 gitsearch.GithubSearchService/Search
+grpcurl -plaintext -d '{"search_term":"memory leak","type":"issues","page":1,"per_page":15}' localhost:50051 gitsearch.GithubSearchService/Search
+grpcurl -plaintext -d '{"search_term":"grpc","type":"repositories","page":1,"per_page":5}' localhost:50051 gitsearch.GithubSearchService/Search
+grpcurl -plaintext -d '{"search_term":"devops","type":"topics","page":1,"per_page":5}' localhost:50051 gitsearch.GithubSearchService/Search
+grpcurl -plaintext -d '{"search_term":"torvalds","type":"users","page":1,"per_page":10}' localhost:50051 gitsearch.GithubSearchService/Search
+
+
+grpcurl -plaintext -d '{"search_term":"jwt","user":"torvalds","type":"code","page":1,"per_page":10}' localhost:50051 gitsearch.GithubSearchService/Search
+grpcurl -plaintext -d '{"search_term":"fix bug","user":"golang","type":"commits","page":2,"per_page":20}' localhost:50051 gitsearch.GithubSearchService/Search
+grpcurl -plaintext -d '{"search_term":"memory leak","type":"issues","page":1,"per_page":15}' localhost:50051 gitsearch.GithubSearchService/Search
+grpcurl -plaintext -d '{"search_term":"grpc","type":"repositories","page":1,"per_page":5}' localhost:50051 gitsearch.GithubSearchService/Search
+grpcurl -plaintext -d '{"search_term":"devops","type":"topics","page":1,"per_page":5}' localhost:50051 gitsearch.GithubSearchService/Search
+grpcurl -plaintext -d '{"search_term":"torvalds","type":"users","page":1,"per_page":10}' localhost:50051 gitsearch.GithubSearchService/Search

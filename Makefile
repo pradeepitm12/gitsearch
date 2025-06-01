@@ -19,3 +19,8 @@ build:
 
 clean:
 	rm -rf $(OUT_DIR)/*.pb.go bin/
+
+.PHONY: test
+
+test:
+	go test -v ./...

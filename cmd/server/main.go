@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/pradeepitm12/gitsearch/internal/git"
 	"github.com/pradeepitm12/gitsearch/internal/middleware"
 	"golang.org/x/time/rate"
 	"log"
@@ -25,8 +26,8 @@ func main() {
 	grpcServer := grpc.NewServer(
 		grpc.UnaryInterceptor(middleware.RateLimit(limiter)),
 	)
-
-	pb.RegisterGithubSearchServiceServer(grpcServer, service.New(cfg.GitHubToken))
+	client := git.NewClient(cfg.GitHubToken)
+	pb.RegisterGithubSearchServiceServer(grpcServer, service.NewServer(client))
 
 	reflection.Register(grpcServer)
 
