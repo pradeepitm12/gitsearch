@@ -4,6 +4,11 @@
     --go-grpc_out=. --go-grpc_opt=paths=source_relative \
     proto/gitsearch/gitsearch.proto
 
+
+# To generate documents 
+    brew install protoc-gen-doc
+    protoc --doc_out=docs --doc_opt=html,index.html proto/gitsearch/gitsearch.proto
+
 # ToDo
     Write a gRPC client in Go
     Add logging 
@@ -18,9 +23,6 @@
     grpcurl -plaintext -d '{"search_term":"grpc","type":"repositories"}' localhost:50051 gitsearch.GithubSearchService/Search
     grpcurl -plaintext -d '{"search_term":"devops","type":"topics"}' localhost:50051 gitsearch.GithubSearchService/Search
     grpcurl -plaintext -d '{"search_term":"torvalds","type":"users"}' localhost:50051 gitsearch.GithubSearchService/Search
-
-With pageination
-grpcurl -plaintext -d '{"type": "code","search_term": "grpc","user": "grpc","page": 1,"per_page": 5}' localhost:50051 gitsearch.GithubSearchService/Search
 
 
 # ToDo,
@@ -46,3 +48,7 @@ grpcurl -plaintext -d '{"search_term":"memory leak","type":"issues","page":1,"pe
 grpcurl -plaintext -d '{"search_term":"grpc","type":"repositories","page":1,"per_page":5}' localhost:50051 gitsearch.GithubSearchService/Search
 grpcurl -plaintext -d '{"search_term":"devops","type":"topics","page":1,"per_page":5}' localhost:50051 gitsearch.GithubSearchService/Search
 grpcurl -plaintext -d '{"search_term":"torvalds","type":"users","page":1,"per_page":10}' localhost:50051 gitsearch.GithubSearchService/Search
+
+Docker build : docker build -t gitsearch:latest .
+
+Docker run :docker run -p 50051:50051 -e GITHUB_TOKEN=$GITHUB_TOKEN gitsearch:latest
