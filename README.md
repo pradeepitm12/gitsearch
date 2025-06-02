@@ -6,8 +6,8 @@ gitsearch is a gRPC based search service used to search terms on github.
 - you can pass user filter with  "code" || "commits" || "issues".
 - Example to search
 ```
-grpcurl -plaintext -d '{"search_term":"jwt","user":"torvalds","type":"code"}' localhost:50051 gitsearch.GithubSearchService/Search
-grpcurl -plaintext -d '{"search_term":"fix bug","user":"golang","type":"commits"}' localhost:50051 gitsearch.GithubSearchService/Search
+grpcurl -plaintext -d '{"search_term":"jwt","type":"code"}' localhost:50051 gitsearch.GithubSearchService/Search
+grpcurl -plaintext -d '{"search_term":"fix bug","type":"commits"}' localhost:50051 gitsearch.GithubSearchService/Search
 grpcurl -plaintext -d '{"search_term":"memory leak","type":"issues"}' localhost:50051 gitsearch.GithubSearchService/Search
 grpcurl -plaintext -d '{"search_term":"grpc","type":"repositories"}' localhost:50051 gitsearch.GithubSearchService/Search
 grpcurl -plaintext -d '{"search_term":"devops","type":"topics"}' localhost:50051 gitsearch.GithubSearchService/Search
