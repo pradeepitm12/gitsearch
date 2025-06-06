@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package gitsearch;
+
+option go_package = "github.com/pradeepitm12/gitsearch/proto/gitsearch;gitsearch";
+
+// GithubSearchService defines available GitHub search operations.
+service GithubSearchService {
+  rpc Search(SearchRequest) returns (SearchResponse);
+}
+
+// SearchRequest is a GitHub search query.
+message SearchRequest {
+  string search_term = 1; // the actual search term
+  string user = 2; // to filter search result with user
+  string  type = 3; // "code", "commits", "issues", "repositories", "topics", "users".
+  int32 page = 4; // the page numer
+  int32 per_page = 5; // number of results per page
+}
+
+// SearchResponse is all the results.
+message SearchResponse {
+  repeated Result results = 1;
+}
+
+// Result is outcome of the search.
+message Result {
+  string file_url = 1; // the url to view the result
+  string repo = 2; // repository name (or login name for users).
+}
