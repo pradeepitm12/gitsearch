@@ -1,14 +1,16 @@
 package service
 
 import (
+	"cmp"
 	"context"
+
 	"github.com/pradeepitm12/gitsearch/internal/git"
 	pb "github.com/pradeepitm12/gitsearch/proto/gitsearch"
 )
 
-type RepositoriesStrategy struct{}
+type repositoriesStrategy struct{}
 
-func (c *RepositoriesStrategy) Search(ctx context.Context, client git.GitClient, query string, page, perPage int) ([]*pb.Result, error) {
+func (c *repositoriesStrategy) Search(ctx context.Context, client git.GitClient, query string, page, perPage int) ([]*pb.Result, error) {
 	results, err := client.SearchRepos(ctx, query, page, perPage)
 	if err != nil {
 		return nil, err
@@ -16,14 +18,7 @@ func (c *RepositoriesStrategy) Search(ctx context.Context, client git.GitClient,
 
 	var pbResults []*pb.Result
 	for _, r := range results {
-
-		repoName := ""
-		if r.FullName != nil {
-			repoName = *r.FullName
-		} else if r.Name != nil {
-			repoName = *r.Name
-		}
-
+		repoName := cmp.Or(r.GetFullName(), r.GetName())
 		pbResults = append(pbResults, &pb.Result{
 			FileUrl: r.GetHTMLURL(),
 			Repo:    repoName,

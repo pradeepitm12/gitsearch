@@ -3,13 +3,14 @@ package service
 import (
 	"context"
 	"fmt"
+
 	"github.com/pradeepitm12/gitsearch/internal/git"
 	pb "github.com/pradeepitm12/gitsearch/proto/gitsearch"
 )
 
-type TopicsStrategy struct{}
+type topicsStrategy struct{}
 
-func (c *TopicsStrategy) Search(ctx context.Context, client git.GitClient, query string, page, perPage int) ([]*pb.Result, error) {
+func (c *topicsStrategy) Search(ctx context.Context, client git.GitClient, query string, page, perPage int) ([]*pb.Result, error) {
 	results, err := client.SearchTopics(ctx, query, page, perPage)
 	if err != nil {
 		return nil, err

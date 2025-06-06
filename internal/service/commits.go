@@ -2,13 +2,14 @@ package service
 
 import (
 	"context"
+	
 	"github.com/pradeepitm12/gitsearch/internal/git"
 	pb "github.com/pradeepitm12/gitsearch/proto/gitsearch"
 )
 
-type CommitsStrategy struct{}
+type commitsStrategy struct{}
 
-func (c *CommitsStrategy) Search(ctx context.Context, client git.GitClient, query string, page, perPage int) ([]*pb.Result, error) {
+func (c *commitsStrategy) Search(ctx context.Context, client git.GitClient, query string, page, perPage int) ([]*pb.Result, error) {
 	results, err := client.SearchCommits(ctx, query, page, perPage)
 	if err != nil {
 		return nil, err

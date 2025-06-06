@@ -17,8 +17,7 @@ func RateLimit(limiter *rate.Limiter) grpc.UnaryServerInterceptor {
 		info *grpc.UnaryServerInfo,
 		handler grpc.UnaryHandler,
 	) (interface{}, error) {
-
-		if !limiter.Allow() {
+		if limiter != nil && !limiter.Allow() {
 			log.Println("Rate limit exceeded")
 			return nil, status.Error(codes.ResourceExhausted, "rate limit exceeded")
 		}

@@ -2,13 +2,14 @@ package service
 
 import (
 	"context"
+
 	"github.com/pradeepitm12/gitsearch/internal/git"
 	pb "github.com/pradeepitm12/gitsearch/proto/gitsearch"
 )
 
-type UsersStrategy struct{}
+type usersStrategy struct{}
 
-func (c *UsersStrategy) Search(ctx context.Context, client git.GitClient, query string, page, perPage int) ([]*pb.Result, error) {
+func (c *usersStrategy) Search(ctx context.Context, client git.GitClient, query string, page, perPage int) ([]*pb.Result, error) {
 	results, err := client.SearchUsers(ctx, query, page, perPage)
 	if err != nil {
 		return nil, err

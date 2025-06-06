@@ -2,12 +2,14 @@ package service
 
 import (
 	"context"
+	"testing"
+
 	"github.com/google/go-github/v50/github"
-	"github.com/pradeepitm12/gitsearch/internal/test/mock"
-	pb "github.com/pradeepitm12/gitsearch/proto/gitsearch"
 	"github.com/stretchr/testify/assert"
 	tmock "github.com/stretchr/testify/mock"
-	"testing"
+
+	"github.com/pradeepitm12/gitsearch/internal/test/mock"
+	pb "github.com/pradeepitm12/gitsearch/proto/gitsearch"
 )
 
 func TestSearch_Commits(t *testing.T) {

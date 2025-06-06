@@ -25,6 +25,8 @@ const (
 // GithubSearchServiceClient is the client API for GithubSearchService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
+//
+// GithubSearchService defines available GitHub search operations.
 type GithubSearchServiceClient interface {
 	Search(ctx context.Context, in *SearchRequest, opts ...grpc.CallOption) (*SearchResponse, error)
 }
@@ -50,6 +52,8 @@ func (c *githubSearchServiceClient) Search(ctx context.Context, in *SearchReques
 // GithubSearchServiceServer is the server API for GithubSearchService service.
 // All implementations must embed UnimplementedGithubSearchServiceServer
 // for forward compatibility.
+//
+// GithubSearchService defines available GitHub search operations.
 type GithubSearchServiceServer interface {
 	Search(context.Context, *SearchRequest) (*SearchResponse, error)
 	mustEmbedUnimplementedGithubSearchServiceServer()
